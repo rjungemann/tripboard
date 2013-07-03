@@ -24,8 +24,14 @@ def check_tmux
   unless `ps aux | grep tmux | grep -v grep`.empty?
     contents = `tmux show-buffer 2>/dev/null`
 
+    # XXX: tmux on Linux will claim that there are characters in an empty tmux
+    # buffer!
+    contents_empty = RUBY_PLATFORM.downcase.include?('linux') ?
+      contents.length <= 2 :
+      contents.empty?
+
     # If tmux buffer has contents
-    unless contents.empty?
+    unless contents_empty
       File.open "#{ ENV['HOME'] }/.tripboard-buffer.txt", 'w' do |f|
         f.puts contents
       end
