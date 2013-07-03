@@ -71,7 +71,6 @@ TODO
 
 * Allow for user to specify buffer file with an environment variable.
 * Allow for user to specify tripboard path with an environment variable.
-* Refactor `tripboard` script into a library for easier extensibility.
 * Consider what other scripts may use tripboard.
 * OS X text service for tripboard copy and paste
 
