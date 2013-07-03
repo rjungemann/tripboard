@@ -89,4 +89,5 @@ TODO
 * Allow for user to specify tripboard path with an environment variable.
 * Consider what other scripts may use tripboard.
 * OS X text service for tripboard copy and paste
+* Add testing
 
