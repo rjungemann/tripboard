@@ -1,11 +1,13 @@
 #!/usr/bin/env ruby
 
+# Copy STDIN to tripboard buffer.
 def copy
   File.open "#{ ENV['HOME'] }/.tripboard-buffer.txt", 'w' do |f|
     f.puts(STDIN.gets + "\n")
   end
 end
 
+# Paste tripboard buffer to STDOUT.
 def paste
   check_tmux
 
@@ -15,11 +17,14 @@ def paste
   print contents
 end
 
+# Check if tmux buffer has contents. If it does, move it to tripboard buffer
+# then delete contents of tmux buffer.
 def check_tmux
   # If tmux is running
   unless `ps aux | grep tmux | grep -v grep`.empty?
     contents = `tmux show-buffer 2>/dev/null`
 
+    # If tmux buffer has contents
     unless contents.empty?
       File.open "#{ ENV['HOME'] }/.tripboard-buffer.txt", 'w' do |f|
         f.puts contents
@@ -30,5 +35,5 @@ def check_tmux
   end
 end
 
-send ARGV[0]
+send ARGV[0], *ARGV[1..-1]
 
