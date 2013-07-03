@@ -1,9 +1,9 @@
 class Tripboard
 
   # Copy STDIN to tripboard buffer.
-  def copy
+  def copy(contents)
     File.open "#{ ENV['HOME'] }/.tripboard-buffer.txt", 'w' do |f|
-      f.puts(STDIN.gets + "\n")
+      f.puts(contents + "\n")
     end
   end
 
@@ -12,9 +12,7 @@ class Tripboard
     check_tmux
 
     # There will always be exactly one stray newline, so remove it
-    contents = File.read("#{ ENV['HOME'] }/.tripboard-buffer.txt")[0..-2]
-
-    print contents
+    File.read("#{ ENV['HOME'] }/.tripboard-buffer.txt")[0..-2]
   end
 
   # Check if tmux buffer has contents. If it does, move it to tripboard buffer
@@ -24,11 +22,9 @@ class Tripboard
     unless `ps aux | grep tmux | grep -v grep`.empty?
       contents = `tmux show-buffer 2>/dev/null`
 
-      # XXX: tmux on Linux will claim that there are characters in an empty tmux
-      # buffer!
-      contents_empty = RUBY_PLATFORM.downcase.include?('linux') ?
-        contents.length <= 2 :
-        contents.empty?
+      # XXX: tmux on Linux will claim that there are characters in an empty
+      # tmux buffer!
+      contents_empty = contents.length <= 2
 
       # If tmux buffer has contents
       unless contents_empty

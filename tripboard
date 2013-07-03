@@ -2,5 +2,27 @@
 
 require_relative 'lib/tripboard'
 
-Tripboard.new.send ARGV[0], *ARGV[1..-1]
+class TripboardCommand
+
+  def copy
+    tripboard.copy STDIN.gets
+  end
+
+  def paste
+    print tripboard.paste
+  end
+
+  def check_tmux
+    tripboard.check_tmux
+  end
+
+  private
+
+  def tripboard
+    @tripboard ||= Tripboard.new
+  end
+
+end
+
+TripboardCommand.new.send ARGV[0], *ARGV[1..-1]
 

@@ -58,6 +58,22 @@ You can use `tripboard` directly like so:
   * `~/.tripboard/tripboard paste > somfile` to paste contents somewhere else
   * `~/.tripboard/tripboard check_tmux` to manually copy over tmux buffer
 
+You can use the Ruby library like this:
+
+    require '~/.tripboard/lib/tripboard'
+
+    # Initialize tripboard
+    tripboard = Tripboard.new
+
+    # Copy text into tripboard
+    tripboard.copy 'foo'
+
+    # Paste text from tripboard
+    puts tripboard.paste
+
+    # Move contents of tmux buffer into tripboard if it exists
+    tripboard.check_tmux
+
 Limitations
 -----------
 
