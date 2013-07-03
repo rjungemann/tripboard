@@ -1,0 +1,34 @@
+#!/usr/bin/env ruby
+
+def copy
+  File.open "#{ ENV['HOME'] }/.tripboard-buffer.txt", 'w' do |f|
+    f.puts(STDIN.gets + "\n")
+  end
+end
+
+def paste
+  check_tmux
+
+  # There will always be exactly one stray newline, so remove it
+  contents = File.read("#{ ENV['HOME'] }/.tripboard-buffer.txt")[0..-2]
+
+  print contents
+end
+
+def check_tmux
+  # If tmux is running
+  unless `ps aux | grep tmux | grep -v grep`.empty?
+    contents = `tmux show-buffer 2>/dev/null`
+
+    unless contents.empty?
+      File.open "#{ ENV['HOME'] }/.tripboard-buffer.txt", 'w' do |f|
+        f.puts contents
+      end
+
+      `tmux delete-buffer`
+    end
+  end
+end
+
+send ARGV[0]
+
