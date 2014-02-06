@@ -1,5 +1,4 @@
 class Tripboard
-
   # Copy STDIN to tripboard buffer.
   def copy(contents)
     File.open "#{ ENV['HOME'] }/.tripboard-buffer.txt", 'w' do |f|
@@ -17,25 +16,26 @@ class Tripboard
 
   # Check if tmux buffer has contents. If it does, move it to tripboard buffer
   # then delete contents of tmux buffer.
+  #
   def check_tmux
-    # If tmux is running
-    unless `ps aux | grep tmux | grep -v grep`.empty?
-      contents = `tmux show-buffer 2>/dev/null`
+    # Skip if tmux is not running.
+    return if `ps aux | grep tmux | grep -v grep`.empty?
 
-      # XXX: tmux on Linux will claim that there are characters in an empty
-      # tmux buffer!
-      contents_empty = contents.length <= 2
+    contents = `tmux show-buffer 2>/dev/null`
 
-      # If tmux buffer has contents
-      unless contents_empty
-        File.open "#{ ENV['HOME'] }/.tripboard-buffer.txt", 'w' do |f|
-          f.puts contents
-        end
+    # Return if tmux buffer has no contents has contents.
+    #
+    # XXX: On Linux, tmux will sometimes claim that there is a character
+    # followed by a newline when the tmux buffer is empty!
+    #
+    return if contents.empty? ||
+      (contents.length == 2 && contents.match(/.\n/))
 
-        `tmux delete-buffer`
-      end
+    File.open "#{ ENV['HOME'] }/.tripboard-buffer.txt", 'w' do |f|
+      f.puts contents
     end
-  end
 
+    `tmux delete-buffer`
+  end
 end
 

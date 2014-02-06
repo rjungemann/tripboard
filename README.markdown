@@ -80,7 +80,8 @@ Limitations
 * Right now, tmux on Linux, will sometimes claim that the tmux buffer is not
 empty when it is (even after calling `tmux delete-buffer` it will claim that
 there is one character and a newline in it). My workaround is to consider the
-tmux buffer empty if it has `<= 2` characters in it on Linux.
+tmux buffer empty if it has two characters where the second character is a
+newline.
 
 TODO
 ----

@@ -3,7 +3,6 @@
 require_relative 'lib/tripboard'
 
 class TripboardCommand
-
   def copy
     tripboard.copy STDIN.gets
   end
@@ -21,7 +20,6 @@ class TripboardCommand
   def tripboard
     @tripboard ||= Tripboard.new
   end
-
 end
 
 TripboardCommand.new.send ARGV[0], *ARGV[1..-1]
