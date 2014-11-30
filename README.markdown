@@ -57,6 +57,10 @@ You can use `tripboard` directly like so:
   * `echo foo | ~/.tripboard/tripboard copy` to copy contents to tripboard
   * `~/.tripboard/tripboard paste > somfile` to paste contents somewhere else
   * `~/.tripboard/tripboard check_tmux` to manually copy over tmux buffer
+  * `~/.tripboard/tripboard from_clipboard` to move contents of clipboard into
+    tripboard.
+  * `~/.tripboard/tripboard to_clipboard` to move contents of tripboard into
+    clipboard.
 
 You can use the Ruby library like this:
 
@@ -73,6 +77,12 @@ You can use the Ruby library like this:
 
     # Move contents of tmux buffer into tripboard if it exists
     tripboard.check_tmux
+
+    # Move contents of clipboard into tripboard
+    tripboard.from_clipboard
+
+    # Move contents of tripboard into clipboard
+    tripboard.to_clipboard
 
 Limitations
 -----------
